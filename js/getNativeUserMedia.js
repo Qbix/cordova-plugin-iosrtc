@@ -7,9 +7,11 @@
 module.exports = getNativeUserMedia;
 
 var cordova = window.cordova,
-RTCSessionDescription = window.RTCSessionDescription,
-RTCIceCandidate = window.RTCIceCandidate,
-RTCRtpTransceiver = window.RTCRtpTransceiver;
+IosrtcRTCPeerConnection = require('./RTCPeerConnection'),
+IosrtcRTCIceCandidate = require('./RTCIceCandidate'),
+IosrtcRTCSessionDescription = require('./RTCSessionDescription');
+
+
 
 let gumPlugin = (function () {
 	'use strict';
@@ -96,7 +98,7 @@ let gumPlugin = (function () {
 		iosrtcLocalPeerConnection,
 		nativeLocalWebRTCPeerConnection;
 
-	if (!RTCRtpTransceiver.prototype.hasOwnProperty('currentDirection')) {
+	if (!window.RTCRtpTransceiver.prototype.hasOwnProperty('currentDirection')) {
 		pc_config.sdpSemantics = "plan-b";
 	}
 
@@ -114,10 +116,7 @@ let gumPlugin = (function () {
 
 	if (typeof cordova !== 'undefined' && (_ua.indexOf('iPad') !== -1 || _ua.indexOf('iPhone') !== -1 || _ua.indexOf('iPod') !== -1)) {
 		iosrtcLocalPeerConnection = (function () {
-			var IosrtcRTCPeerConnection = cordova.plugins.iosrtc.RTCPeerConnection,
-				IosrtcRTCIceCandidate = cordova.plugins.iosrtc.RTCIceCandidate,
-				IosrtcRTCSessionDescription = cordova.plugins.iosrtc.RTCSessionDescription,
-				iceQueue = [],
+			var iceQueue = [],
 				_negotiating = false,
 				_offerQueue = null;
 
@@ -224,7 +223,7 @@ let gumPlugin = (function () {
 				_nativeRTCPeerConnection.setRemoteDescription(description).then(function () {
 					_nativeRTCPeerConnection.createAnswer()
 						.then(function (answer) {
-							var localDescription = new RTCSessionDescription(answer);
+							var localDescription = new window.RTCSessionDescription(answer);
 
 							return _iosrtcRTCPeerConnection.setLocalDescription(localDescription).then(function () {
 								var message = {
@@ -343,7 +342,7 @@ let gumPlugin = (function () {
 			function setOffer(message) {
 				//log('nativeLocalWebRTCPeerConnection createOffer + ' + message.sdp)
 
-				var description = new RTCSessionDescription({type: message.type, sdp: message.sdp});
+				var description = new window.RTCSessionDescription({type: message.type, sdp: message.sdp});
 
 				return _nativeRTCPeerConnection.setRemoteDescription(description).then(function () {
 					log('nativeLocalWebRTCPeerConnection: offer received and applied');
@@ -352,7 +351,7 @@ let gumPlugin = (function () {
 						.then(function (answer) {
 							log('nativeLocalWebRTCPeerConnection: answer created');
 
-							var localDescription = new RTCSessionDescription(answer);
+							var localDescription = new window.RTCSessionDescription(answer);
 
 							return _nativeRTCPeerConnection.setLocalDescription(localDescription).then(function () {
 								log('nativeLocalWebRTCPeerConnection: answer created: send answer');
@@ -383,7 +382,7 @@ let gumPlugin = (function () {
 			}
 
 			function setAnswer(message) {
-				var description = new RTCSessionDescription(message.sdp);
+				var description = new window.RTCSessionDescription(message.sdp);
 
 				_iosrtcRTCPeerConnection.setRemoteDescription(description).then(function () {
 					log('nativeLocalWebRTCPeerConnection: answer received and applied');
@@ -395,7 +394,7 @@ let gumPlugin = (function () {
 				var RTCPeerConnection = _nativeRTCPeerConnection;
 				RTCPeerConnection.createOffer({'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true})
 					.then(function (offer) {
-						var localDescription = new RTCSessionDescription(offer);
+						var localDescription = new window.RTCSessionDescription(offer);
 						return RTCPeerConnection.setLocalDescription(localDescription).then(function () {
 							//callback(iosRTCPeerConnection.localDescription.sdp);
 							var message = {
@@ -414,7 +413,7 @@ let gumPlugin = (function () {
 
 			function addIceCandidate(message) {
 				log('nativeLocalWebRTCPeerConnection: addIceCandidate: ' + message.candidate);
-				var candidate = new RTCIceCandidate({
+				var candidate = new window.RTCIceCandidate({
 					candidate: message.candidate,
 					sdpMLineIndex: message.label,
 					sdpMid: message.sdpMid
