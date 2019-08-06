@@ -21,6 +21,7 @@ var
 	exec                   = require('cordova/exec'),
 	domready               = require('domready'),
 
+	getNativeUserMedia     = require('./getNativeUserMedia'),
 	getUserMedia           = require('./getUserMedia'),
 	enumerateDevices       = require('./enumerateDevices'),
 	RTCPeerConnection      = require('./RTCPeerConnection'),
@@ -36,6 +37,7 @@ var
  */
 module.exports = {
 	// Expose WebRTC classes and functions.
+	getNativeUserMedia:    getNativeUserMedia,
 	getUserMedia:          getUserMedia,
 	enumerateDevices:      enumerateDevices,
 	getMediaDevices:       enumerateDevices,  // TMP

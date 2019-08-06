@@ -2,11 +2,11 @@
  * cordova-plugin-iosrtc v4.0.2
  * Cordova iOS plugin exposing the full WebRTC W3C JavaScript APIs
  * Copyright 2015-2017 eFace2Face, Inc. (https://eface2face.com)
- * Copyright 2017 BasqueVoIPMafia (https://github.com/BasqueVoIPMafia)
+ * Copyright 2017-2019 BasqueVoIPMafia (https://github.com/BasqueVoIPMafia)
  * License MIT
  */
 
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iosrtc = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iosrtc = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(_dereq_,module,exports){
 /**
  * Expose an object with WebRTC Errors.
  */
@@ -466,7 +466,7 @@ function onEvent(data) {
 	}
 }
 
-},{"./MediaStreamTrack":5,"cordova/exec":undefined,"debug":17,"yaeti":23}],4:[function(_dereq_,module,exports){
+},{"./MediaStreamTrack":5,"cordova/exec":undefined,"debug":18,"yaeti":24}],4:[function(_dereq_,module,exports){
 /**
  * Expose the MediaStreamRenderer class.
  */
@@ -818,7 +818,7 @@ function getElementPositionAndSize() {
 	};
 }
 
-},{"./MediaStream":3,"cordova/exec":undefined,"debug":17,"random-number":22,"yaeti":23}],5:[function(_dereq_,module,exports){
+},{"./MediaStream":3,"cordova/exec":undefined,"debug":18,"random-number":23,"yaeti":24}],5:[function(_dereq_,module,exports){
 /**
  * Expose the MediaStreamTrack class.
  */
@@ -938,7 +938,7 @@ function onEvent(data) {
 	}
 }
 
-},{"./enumerateDevices":13,"cordova/exec":undefined,"debug":17,"yaeti":23}],6:[function(_dereq_,module,exports){
+},{"./enumerateDevices":13,"cordova/exec":undefined,"debug":18,"yaeti":24}],6:[function(_dereq_,module,exports){
 /**
  * Expose the RTCDTMFSender class.
  */
@@ -1070,7 +1070,7 @@ function onEvent(data) {
 	}
 }
 
-},{"cordova/exec":undefined,"debug":17,"random-number":22,"yaeti":23}],7:[function(_dereq_,module,exports){
+},{"cordova/exec":undefined,"debug":18,"random-number":23,"yaeti":24}],7:[function(_dereq_,module,exports){
 /**
  * Expose the RTCDataChannel class.
  */
@@ -1301,7 +1301,7 @@ function onEvent(data) {
 	}
 }
 
-},{"cordova/exec":undefined,"debug":17,"random-number":22,"yaeti":23}],8:[function(_dereq_,module,exports){
+},{"cordova/exec":undefined,"debug":18,"random-number":23,"yaeti":24}],8:[function(_dereq_,module,exports){
 /**
  * Expose the RTCIceCandidate class.
  */
@@ -2132,7 +2132,7 @@ function onEvent(data) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Errors":1,"./MediaStream":3,"./MediaStreamTrack":5,"./RTCDTMFSender":6,"./RTCDataChannel":7,"./RTCIceCandidate":8,"./RTCSessionDescription":10,"./RTCStatsReport":11,"./RTCStatsResponse":12,"cordova/exec":undefined,"debug":17,"random-number":22,"yaeti":23}],10:[function(_dereq_,module,exports){
+},{"./Errors":1,"./MediaStream":3,"./MediaStreamTrack":5,"./RTCDTMFSender":6,"./RTCDataChannel":7,"./RTCIceCandidate":8,"./RTCSessionDescription":10,"./RTCStatsReport":11,"./RTCStatsResponse":12,"cordova/exec":undefined,"debug":18,"random-number":23,"yaeti":24}],10:[function(_dereq_,module,exports){
 /**
  * Expose the RTCSessionDescription class.
  */
@@ -2256,7 +2256,603 @@ function getMediaDeviceInfos(devices) {
 	return mediaDeviceInfos;
 }
 
-},{"./MediaDeviceInfo":2,"cordova/exec":undefined,"debug":17}],14:[function(_dereq_,module,exports){
+},{"./MediaDeviceInfo":2,"cordova/exec":undefined,"debug":18}],14:[function(_dereq_,module,exports){
+/*jshint esversion: 6 */
+/*jslint latedef:false*/
+/**
+ * Expose the getUserMedia function.
+ */
+
+module.exports = getNativeUserMedia;
+
+var cordova = window.cordova,
+RTCSessionDescription = window.RTCSessionDescription,
+RTCIceCandidate = window.RTCIceCandidate,
+RTCRtpTransceiver = window.RTCRtpTransceiver;
+
+let gumPlugin = (function () {
+	'use strict';
+
+
+	var pc_config = {
+		"iceServers": [
+			{
+				"urls": "stun:stun.l.google.com:19302"
+			}
+		],
+		"sdpSemantics": "unified-plan"
+	},
+		_iosrtcRTCPeerConnection,
+		_nativeRTCPeerConnection,
+		_debug = false,
+		_ua = navigator.userAgent,
+		event = (function () {
+
+			var events = {},
+			CustomEvent = function (eventName) {
+
+				this.eventName = eventName;
+				this.callbacks = [];
+
+				this.registerCallback = function (callback) {
+					this.callbacks.push(callback);
+				};
+
+				this.unregisterCallback = function (callback) {
+					const index = this.callbacks.indexOf(callback);
+					if (index > -1) {
+						this.callbacks.splice(index, 1);
+					}
+				};
+
+				this.fire = function (data) {
+					const callbacks = this.callbacks.slice(0);
+					callbacks.forEach((callback) => {
+						callback(data);
+					});
+				};
+			},
+			on = function (eventName, callback) {
+				let event = events[eventName];
+				if (!event) {
+					event = new CustomEvent(eventName);
+					events[eventName] = event;
+				}
+				event.registerCallback(callback);
+			},
+			off = function (eventName, callback) {
+				const event = events[eventName];
+				if (event && event.callbacks.indexOf(callback) > -1) {
+					event.unregisterCallback(callback);
+					if (event.callbacks.length === 0) {
+						delete events[eventName];
+					}
+				}
+			},
+			doesHandlerExist = function (eventName) {
+				if (events[eventName] !== null && events[eventName].callbacks.length !== 0) {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			dispatch = function (eventName, data) {
+				if (!doesHandlerExist(eventName)) {
+					return;
+				}
+				const event = events[eventName];
+				if (event) {
+					event.fire(data);
+				}
+			};
+
+			return {
+				dispatch: dispatch,
+				on: on,
+				off: off
+			};
+		}()),
+		iosrtcLocalPeerConnection,
+		nativeLocalWebRTCPeerConnection;
+
+	if (!RTCRtpTransceiver.prototype.hasOwnProperty('currentDirection')) {
+		pc_config.sdpSemantics = "plan-b";
+	}
+
+	function log(text) {
+		if (!_debug) {
+			return;
+		}
+		if (window.performance) {
+			var now = (window.performance.now() / 1000).toFixed(3);
+			console.log(now + ": " + text);
+		} else {
+			console.log(text);
+		}
+	}
+
+	if (typeof cordova !== 'undefined' && (_ua.indexOf('iPad') !== -1 || _ua.indexOf('iPhone') !== -1 || _ua.indexOf('iPod') !== -1)) {
+		iosrtcLocalPeerConnection = (function () {
+			var IosrtcRTCPeerConnection = cordova.plugins.iosrtc.RTCPeerConnection,
+				IosrtcRTCIceCandidate = cordova.plugins.iosrtc.RTCIceCandidate,
+				IosrtcRTCSessionDescription = cordova.plugins.iosrtc.RTCSessionDescription,
+				iceQueue = [],
+				_negotiating = false,
+				_offerQueue = null;
+
+			function setAnswer(message) {
+				var description = new IosrtcRTCSessionDescription(message.sdp);
+
+				return _iosrtcRTCPeerConnection.setRemoteDescription(description).then(function () {
+					log('iosrtcLocalPeerConnection: answer received and applied');
+
+					for (var i in iceQueue) {
+						if (iceQueue.hasOwnProperty(i)) {
+							if (iceQueue[i] !== null) {
+								nativeLocalWebRTCPeerConnection.addIceCandidate(iceQueue[i]);
+							}
+							iceQueue[i] = null;
+						}
+					}
+				});
+			}
+
+			function addIceCandidate(message) {
+				log('iosrtcLocalPeerConnection: addIceCandidate: ' + message.candidate);
+
+				var candidate = new IosrtcRTCIceCandidate({
+					candidate: message.candidate,
+					sdpMLineIndex: message.label,
+					sdpMid: message.sdpMid
+				});
+				_iosrtcRTCPeerConnection.addIceCandidate(candidate)
+					.catch(function (e) {
+						console.error(e);
+					});
+			}
+
+			function gotIceCandidate(event) {
+
+				if (event.candidate) {
+
+					if (event.candidate.candidate.indexOf("relay") < 0) { // if no relay address is found, assuming it means no TURN server
+						log("");
+					}
+					var message = {
+						type: "candidate",
+						label: event.candidate.sdpMLineIndex,
+						sdpMid: event.candidate.sdpMid,
+						candidate: event.candidate.candidate,
+						id: event.candidate.sdpMid
+					};
+
+					//iceQueue.push(message);
+
+					nativeLocalWebRTCPeerConnection.addIceCandidate(message);
+
+				}
+			}
+
+			function createOffer(callback) {
+				log('iosrtcLocalPeerConnection: createOffer, negotiating = ' + _negotiating);
+
+				if (_negotiating === true) {
+					return;
+				}
+				_negotiating = true;
+				var iosRTCPeerConnection = _iosrtcRTCPeerConnection;
+				iosRTCPeerConnection.createOffer({'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true})
+					.then(function (offer) {
+						log('iosrtcLocalPeerConnection: createOffer: offer created');
+
+						var localDescription = new IosrtcRTCSessionDescription(offer);
+						return iosRTCPeerConnection.setLocalDescription(localDescription).then(function () {
+							log('iosrtcLocalPeerConnection: createOffer: send offer');
+
+							//callback(iosRTCPeerConnection.localDescription.sdp);
+							var message = {
+								type: "offer",
+								sdp: iosRTCPeerConnection.localDescription.sdp
+							};
+
+							return nativeLocalWebRTCPeerConnection.setOffer(message).then(function () {
+								_negotiating = false;
+								if (callback !== null) {
+									callback();
+								}
+
+								if (_offerQueue !== null) {
+									log('iosrtcLocalPeerConnection: send offer from queue');
+
+									var newOffer = _offerQueue;
+									_offerQueue = null;
+									newOffer();
+								}
+							});
+
+						});
+					})
+					.catch(function (error) {
+						console.error(error);
+					});
+			}
+
+			function setOffer(message) {
+				var description = new IosrtcRTCSessionDescription({type: message.type, sdp: message.sdp});
+
+				_nativeRTCPeerConnection.setRemoteDescription(description).then(function () {
+					_nativeRTCPeerConnection.createAnswer()
+						.then(function (answer) {
+							var localDescription = new RTCSessionDescription(answer);
+
+							return _iosrtcRTCPeerConnection.setLocalDescription(localDescription).then(function () {
+								var message = {
+									type: "answer",
+									sdp: localDescription
+								};
+								nativeLocalWebRTCPeerConnection.setAnswer(message);
+							});
+						})
+
+						.catch(function (error) {
+							console.error(error);
+						});
+				});
+			}
+
+			function addStream(stream) {
+				if (_iosrtcRTCPeerConnection === null) {
+					return;
+				}
+				log('iosrtcRTCPeerConnection: addStream');
+				let logError = '... addStream signalingState = ' + _iosrtcRTCPeerConnection.signalingState;
+				logError += ', iceConnectionState = ' + _iosrtcRTCPeerConnection.iceConnectionState;
+				logError += ', iceGatheringState = ' + _iosrtcRTCPeerConnection.iceGatheringState;
+				log(logError);
+
+				var
+					newStreamKind,
+					videoTracks = stream.getVideoTracks(),
+					audioTracks = stream.getAudioTracks(),
+					RTCLocalStreams = _iosrtcRTCPeerConnection.getLocalStreams();
+				if (videoTracks.length !== 0 && audioTracks.length === 0) {
+					newStreamKind = 'video';
+				} else if (audioTracks.length !== 0 && videoTracks.length === 0) {
+					newStreamKind = 'audio';
+				}
+
+				log('iosrtcRTCPeerConnection addStream: remove current ' + RTCLocalStreams.length + ' stream(s)');
+
+				for (let t in RTCLocalStreams) {
+					if (RTCLocalStreams.hasOwnProperty(t)) {
+						let videoTracks = RTCLocalStreams[t].getVideoTracks();
+						let audioTracks = RTCLocalStreams[t].getAudioTracks();
+						let currentStreamkind;
+						if (videoTracks.length !== 0 && audioTracks.length === 0) {
+							currentStreamkind = 'video';
+						} else if (audioTracks.length !== 0 && videoTracks.length === 0) {
+							currentStreamkind = 'audio';
+						}
+
+						if (currentStreamkind !== newStreamKind) {
+							continue;
+						}
+						RTCLocalStreams[t].stop();
+						_iosrtcRTCPeerConnection.removeStream(RTCLocalStreams[t]);
+					}
+				}
+				try {
+					//var RTCLocalStreams = _iosrtcRTCPeerConnection.getLocalStreams();
+					//_iosrtcRTCPeerConnection.removeStream(localParticipant.videoStream);
+					console.log("");
+				} catch (e) {
+					console.error(e.message, e);
+				}
+
+
+				if (_negotiating) {
+					_offerQueue = function () {
+						_iosrtcRTCPeerConnection.addStream(stream);
+					};
+				} else {
+					_iosrtcRTCPeerConnection.addStream(stream);
+				}
+			}
+
+			function createIosrtcLocalPeerConnection(callback) {
+				log('createIosrtcLocalPeerConnection');
+
+				var iosRTCPeerConnection = new IosrtcRTCPeerConnection(pc_config);
+				_iosrtcRTCPeerConnection = iosRTCPeerConnection;
+
+				//if(options.streams) iosRTCPeerConnection.addStream(options.streams);
+
+				iosRTCPeerConnection.onicecandidate = function (e) {
+					gotIceCandidate(e);
+				};
+
+				iosRTCPeerConnection.onnegotiationneeded = function (e) {
+					console.log(e);
+					log('iosrtcLocalPeerConnection: onnegotiationneeded');
+					if (iosRTCPeerConnection.connectionState === 'new' && iosRTCPeerConnection.iceConnectionState === 'new' && iosRTCPeerConnection.iceGatheringState === 'new') {
+						return;
+					}
+
+					createOffer();
+				};
+
+				if (callback !== null) {
+					callback();
+				}
+
+			}
+
+			return {
+				createPeerConnection: createIosrtcLocalPeerConnection,
+				createOffer: createOffer,
+				setAnswer: setAnswer,
+				setOffer: setOffer,
+				addIceCandidate: addIceCandidate,
+				addStream: addStream
+			};
+		}());
+		nativeLocalWebRTCPeerConnection = (function () {
+			var iceQueue = [];
+
+			function setOffer(message) {
+				//log('nativeLocalWebRTCPeerConnection createOffer + ' + message.sdp)
+
+				var description = new RTCSessionDescription({type: message.type, sdp: message.sdp});
+
+				return _nativeRTCPeerConnection.setRemoteDescription(description).then(function () {
+					log('nativeLocalWebRTCPeerConnection: offer received and applied');
+
+					return _nativeRTCPeerConnection.createAnswer()
+						.then(function (answer) {
+							log('nativeLocalWebRTCPeerConnection: answer created');
+
+							var localDescription = new RTCSessionDescription(answer);
+
+							return _nativeRTCPeerConnection.setLocalDescription(localDescription).then(function () {
+								log('nativeLocalWebRTCPeerConnection: answer created: send answer');
+
+								var message = {
+									type: "answer",
+									sdp: localDescription
+								};
+								return iosrtcLocalPeerConnection.setAnswer(message).then(function () {
+
+									for (var i in iceQueue) {
+										if (iceQueue.hasOwnProperty(i)) {
+											if (iceQueue[i] !== null) {
+												iosrtcLocalPeerConnection.addIceCandidate(iceQueue[i]);
+											}
+											iceQueue[i] = null;
+										}
+									}
+								});
+
+							});
+						})
+
+						.catch(function (error) {
+							console.error(error);
+						});
+				});
+			}
+
+			function setAnswer(message) {
+				var description = new RTCSessionDescription(message.sdp);
+
+				_iosrtcRTCPeerConnection.setRemoteDescription(description).then(function () {
+					log('nativeLocalWebRTCPeerConnection: answer received and applied');
+				});
+			}
+
+			function createOffer() {
+				log('nativeLocalWebRTCPeerConnection: createOffer');
+				var RTCPeerConnection = _nativeRTCPeerConnection;
+				RTCPeerConnection.createOffer({'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true})
+					.then(function (offer) {
+						var localDescription = new RTCSessionDescription(offer);
+						return RTCPeerConnection.setLocalDescription(localDescription).then(function () {
+							//callback(iosRTCPeerConnection.localDescription.sdp);
+							var message = {
+								type: "offer",
+								sdp: RTCPeerConnection.localDescription.sdp
+							};
+
+							iosrtcLocalPeerConnection.setOffer(message);
+
+						});
+					})
+					.catch(function (error) {
+						console.error(error);
+					});
+			}
+
+			function addIceCandidate(message) {
+				log('nativeLocalWebRTCPeerConnection: addIceCandidate: ' + message.candidate);
+				var candidate = new RTCIceCandidate({
+					candidate: message.candidate,
+					sdpMLineIndex: message.label,
+					sdpMid: message.sdpMid
+				});
+				_nativeRTCPeerConnection.addIceCandidate(candidate)
+					.catch(function (e) {
+						console.error(e);
+					});
+			}
+
+			function gotIceCandidate(event) {
+
+				if (event.candidate) {
+					var message = {
+						type: "candidate",
+						label: event.candidate.sdpMLineIndex,
+						sdpMid: event.candidate.sdpMid,
+						candidate: event.candidate.candidate,
+						id: event.candidate.sdpMid
+					};
+
+					//iceQueue.push(message);
+					iosrtcLocalPeerConnection.addIceCandidate(message);
+
+				}
+			}
+
+			function trackReceived(e) {
+				event.dispatch('trackReceived', e);
+			}
+
+			function createNativeLocalPeerConnection(callback) {
+				log('createNativeLocalPeerConnection');
+
+				var newPeerConnection = new window.RTCPeerConnection(pc_config);
+
+				_nativeRTCPeerConnection = newPeerConnection;
+
+				newPeerConnection.ontrack = function (e) {
+					trackReceived(e);
+				};
+
+				newPeerConnection.onicecandidate = function (e) {
+					gotIceCandidate(e);
+				};
+
+				newPeerConnection.onnegotiationneeded = function (e) {
+					log('nativeLocalPeerConnection: onnegotiationneeded ' + e);
+
+					if (newPeerConnection.connectionState === 'new' && newPeerConnection.iceConnectionState === 'new' && newPeerConnection.iceGatheringState === 'new') {
+						return;
+					}
+
+					createOffer();
+
+				};
+
+				if (callback !== null) {
+					callback();
+				}
+
+			}
+
+			function removeRemoteStreams() {
+				/*var localTracks = localParticipant.tracks;
+				for (var t in localTracks) {
+					if (localTracks[t].stream != null) {
+						localTracks[t].medaStreamTrack.stop();
+						_nativeRTCPeerConnection.removeStream(localTracks[t].stream);
+					}
+				}*/
+			}
+
+			return {
+				createPeerConnection: createNativeLocalPeerConnection,
+				setOffer: setOffer,
+				setAnswer: setAnswer,
+				addIceCandidate: addIceCandidate,
+				removeRemoteStreams: removeRemoteStreams
+			};
+		}());
+	}
+
+	function retrieveUserMediaViaIosrtc(constrains, callback, failureCallback) {
+		cordova.plugins.iosrtc.getUserMedia(
+			constrains,
+			function (stream) {
+				callback(stream);
+			},
+			function (error) {
+				failureCallback(error);
+				console.error(error);
+			}
+		);
+	}
+
+
+	return {
+		getUserMedia: function (constrains) {
+
+			return new Promise(function (resolve, reject) {
+
+				var receiveTrackAndResolve = function (stream) {
+					log('getUserMedia: receiveTrackAndResolve');
+
+					iosrtcLocalPeerConnection.addStream(stream);
+					var tracks = stream.getTracks(),
+					trackNum = 0,
+					trackHandler = function (e) {
+						log('getUserMedia: receiveTrackAndResolve: got track kind: ' + (e.track.kind));
+						log('getUserMedia: receiveTrackAndResolve: got track id:' + (e.track.id));
+						log('getUserMedia: receiveTrackAndResolve: got track stream.id :' + (e.streams[0].id));
+
+						let receivedTrack = e.track;
+						for (var t in tracks) {
+							if (tracks[t].id === receivedTrack.id) {
+								trackNum++;
+								break;
+							}
+						}
+
+						log('getUserMedia: receiveTrackAndResolve: got track trackNum:' + (trackNum) + '/' + (tracks.length));
+
+
+						if (trackNum === tracks.length) {
+							log('getUserMedia: receiveTrackAndResolve: all track received: resolve');
+
+							event.off('trackAdded', trackHandler);
+							resolve(e.streams[0]);
+
+						}
+
+					};
+					event.on('trackReceived', trackHandler);
+				};
+
+
+				if (_iosrtcRTCPeerConnection !== null && _nativeRTCPeerConnection !== null) {
+
+					retrieveUserMediaViaIosrtc(constrains, receiveTrackAndResolve, function (e) {
+						reject(e);
+					});
+				} else {
+					iosrtcLocalPeerConnection.createPeerConnection(function () {
+						nativeLocalWebRTCPeerConnection.createPeerConnection(function () {
+							iosrtcLocalPeerConnection.createOffer(function () {
+								retrieveUserMediaViaIosrtc(constrains, receiveTrackAndResolve, function (e) {
+									reject(e);
+								});
+							});
+
+						});
+					});
+				}
+			});
+
+		}
+	};
+}());
+
+/**
+ * Dependencies.
+ * var
+*	//debug = require('debug')('iosrtc:getUserMedia'),
+*	//debugerror = require('debug')('iosrtc:ERROR:getUserMedia'),
+*	//exec = require('cordova/exec'),
+*	//MediaStream = require('./MediaStream'),
+*	//Errors = require('./Errors');
+*
+* debugerror.log = console.warn.bind(console);
+ */
+
+
+
+function getNativeUserMedia(constraints) {
+	return gumPlugin.getUserMedia(constraints);
+}
+
+},{}],15:[function(_dereq_,module,exports){
 /**
  * Expose the getUserMedia function.
  */
@@ -2433,7 +3029,7 @@ function getUserMedia(constraints) {
 	exec(onResultOK, onResultError, 'iosrtcPlugin', 'getUserMedia', [newConstraints]);
 }
 
-},{"./Errors":1,"./MediaStream":3,"cordova/exec":undefined,"debug":17}],15:[function(_dereq_,module,exports){
+},{"./Errors":1,"./MediaStream":3,"cordova/exec":undefined,"debug":18}],16:[function(_dereq_,module,exports){
 (function (global){
 /**
  * Variables.
@@ -2458,6 +3054,7 @@ var
 	exec                   = _dereq_('cordova/exec'),
 	domready               = _dereq_('domready'),
 
+	getNativeUserMedia     = _dereq_('./getNativeUserMedia'),
 	getUserMedia           = _dereq_('./getUserMedia'),
 	enumerateDevices       = _dereq_('./enumerateDevices'),
 	RTCPeerConnection      = _dereq_('./RTCPeerConnection'),
@@ -2473,6 +3070,7 @@ var
  */
 module.exports = {
 	// Expose WebRTC classes and functions.
+	getNativeUserMedia:    getNativeUserMedia,
 	getUserMedia:          getUserMedia,
 	enumerateDevices:      enumerateDevices,
 	getMediaDevices:       enumerateDevices,  // TMP
@@ -2549,7 +3147,7 @@ function dump() {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./MediaStream":3,"./MediaStreamTrack":5,"./RTCIceCandidate":8,"./RTCPeerConnection":9,"./RTCSessionDescription":10,"./enumerateDevices":13,"./getUserMedia":14,"./videoElementsHandler":16,"cordova/exec":undefined,"debug":17,"domready":19}],16:[function(_dereq_,module,exports){
+},{"./MediaStream":3,"./MediaStreamTrack":5,"./RTCIceCandidate":8,"./RTCPeerConnection":9,"./RTCSessionDescription":10,"./enumerateDevices":13,"./getNativeUserMedia":14,"./getUserMedia":15,"./videoElementsHandler":17,"cordova/exec":undefined,"debug":18,"domready":20}],17:[function(_dereq_,module,exports){
 (function (global){
 /**
  * Expose a function that must be called when the library is loaded.
@@ -2907,7 +3505,7 @@ function releaseMediaStreamRenderer(video) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./MediaStreamRenderer":4,"debug":17}],17:[function(_dereq_,module,exports){
+},{"./MediaStreamRenderer":4,"debug":18}],18:[function(_dereq_,module,exports){
 (function (process){
 /**
  * This is the web browser implementation of `debug()`.
@@ -3096,7 +3694,7 @@ function localstorage() {
 }
 
 }).call(this,_dereq_('_process'))
-},{"./debug":18,"_process":21}],18:[function(_dereq_,module,exports){
+},{"./debug":19,"_process":22}],19:[function(_dereq_,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -3300,7 +3898,7 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":20}],19:[function(_dereq_,module,exports){
+},{"ms":21}],20:[function(_dereq_,module,exports){
 /*!
   * domready (c) Dustin Diaz 2014 - License MIT
   */
@@ -3332,7 +3930,7 @@ function coerce(val) {
 
 });
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],21:[function(_dereq_,module,exports){
 /**
  * Helpers.
  */
@@ -3486,7 +4084,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],22:[function(_dereq_,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -3672,7 +4270,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],22:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 void function(root){
 
   function defaults(options){
@@ -3718,13 +4316,13 @@ void function(root){
   module.exports.defaults = defaults
 }(this)
 
-},{}],23:[function(_dereq_,module,exports){
+},{}],24:[function(_dereq_,module,exports){
 module.exports = {
 	EventTarget : _dereq_('./lib/EventTarget'),
 	Event       : _dereq_('./lib/Event')
 };
 
-},{"./lib/Event":24,"./lib/EventTarget":25}],24:[function(_dereq_,module,exports){
+},{"./lib/Event":25,"./lib/EventTarget":26}],25:[function(_dereq_,module,exports){
 (function (global){
 /**
  * In browsers export the native Event interface.
@@ -3733,7 +4331,7 @@ module.exports = {
 module.exports = global.Event;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],25:[function(_dereq_,module,exports){
+},{}],26:[function(_dereq_,module,exports){
 /**
  * Expose the _EventTarget class.
  */
@@ -3854,5 +4452,5 @@ function _dispatchEvent(event) {
 	return !event.defaultPrevented;
 }
 
-},{}]},{},[15])(15)
+},{}]},{},[16])(16)
 });
