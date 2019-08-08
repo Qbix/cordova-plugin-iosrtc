@@ -75,6 +75,25 @@ cordova.plugins.iosrtc.getUserMedia(
 );
 ```
 
+There is also getNativeUserMedia which return native stream like usual browser. getUserMedia returns separate webview with video/audio stream.(INFORMATION HOW IS IT GOING WILL BE SOON...)
+
+```javascript
+cordova.plugins.iosrtc.getNativeUserMedia(
+  // constraints
+  { audio: true, video: true },
+  // success callback
+  function (stream) {
+    console.log('got local MediaStream: ', stream);
+
+    pc.addStream(stream);
+  },
+  // failure callback
+  function (error) {
+    console.error('getUserMedia failed: ', error);
+  }
+);
+```
+
 In case you'd like to expose the API in the global namespace like regular browsers you can do the following:
 
 ```javascript

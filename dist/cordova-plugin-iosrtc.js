@@ -2504,10 +2504,10 @@ let gumPlugin = (function () {
 					return;
 				}
 				log('iosrtcRTCPeerConnection: addStream');
-				let logError = '... addStream signalingState = ' + _iosrtcRTCPeerConnection.signalingState;
-				logError += ', iceConnectionState = ' + _iosrtcRTCPeerConnection.iceConnectionState;
-				logError += ', iceGatheringState = ' + _iosrtcRTCPeerConnection.iceGatheringState;
-				log(logError);
+				// let logError = '... addStream signalingState = ' + _iosrtcRTCPeerConnection.signalingState;
+				// logError += ', iceConnectionState = ' + _iosrtcRTCPeerConnection.iceConnectionState;
+				// logError += ', iceGatheringState = ' + _iosrtcRTCPeerConnection.iceGatheringState;
+				// log(logError);
 
 				var
 					newStreamKind,
@@ -2810,8 +2810,7 @@ let gumPlugin = (function () {
 				};
 
 
-				if (_iosrtcRTCPeerConnection !== null && _nativeRTCPeerConnection !== null) {
-
+				if (typeof _iosrtcRTCPeerConnection !== "undefined" && typeof _nativeRTCPeerConnection !== "undefined") {
 					retrieveUserMediaViaIosrtc(constrains, receiveTrackAndResolve, function (e) {
 						reject(e);
 					});
